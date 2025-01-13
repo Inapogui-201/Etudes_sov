@@ -17,10 +17,16 @@ import LoginPage from "./pages/admin/pages/LoginPage/LoginPage";
 import ProfilPage from "./pages/admin/pages/ProfilPage/ProfilPage";
 import AdminLayout from "./layout/AdminLayout";
 import PrivateRoute from "./lib/PrivateRoute";
+import BlogPages from "./pages/admin/pages/BlogPage/BlogPages";
+import DestinationPages from "./pages/admin/pages/DestinationPage/DestinationPages";
+import AppointmentsPage from "./pages/admin/pages/Rendez-vous/AppointmentsPage";
+import ScrollToTop from "./components/content/ScrollToTop";
 
 const App = () => {
   return (
     <BrowserRouter>
+          <ScrollToTop/>
+
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
@@ -48,6 +54,9 @@ const App = () => {
         <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard/" element={<HomePages />} />
           <Route path="/admin/mon-profil/" element={<ProfilPage />} />
+          <Route path="/admin/mon-blog/" element={<BlogPages />} />
+          <Route path="/admin/mon-destination/" element={<DestinationPages/>} />
+          <Route path="/admin/mon-rdv/" element={<AppointmentsPage/>} />
         </Route>
         </Route>
 

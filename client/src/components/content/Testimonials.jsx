@@ -17,7 +17,7 @@ const Testimonials = () => {
   return (
     <section className="py-24 bg-gray-50">
       <div className="container px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-4 mb-12">
+        <div className="text-center space-y-4 mb-12 mt[-900px]">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Témoignages</h2>
           <p className="text-gray-500 md:text-lg max-w-2xl mx-auto">
             Découvrez ce que nos clients disent de leur expérience avec nous

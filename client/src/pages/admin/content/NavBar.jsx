@@ -83,16 +83,22 @@ const NavBar = () => {
                 </Link>
               </Button>
               <Button variant="ghost" className="flex items-center gap-2">
+                <Link to={"/admin/mon-blog/"} className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
                 Blog
+                </Link>
               </Button>
               <Button variant="ghost" className="flex items-center gap-2">
+              <Link to={"/admin/mon-destination/"} className="flex items-center gap-2">
                 <Map className="h-4 w-4" />
-                Destinations
+                Destination
+                </Link>
               </Button>
               <Button variant="ghost" className="flex items-center gap-2">
+              <Link to={"/admin/mon-rdv/"} className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                RDV
+                Rendez-vous
+                </Link>
               </Button>
               <Button variant="ghost" className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
