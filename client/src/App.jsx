@@ -21,6 +21,7 @@ import BlogPages from "./pages/admin/pages/BlogPage/BlogPages";
 import DestinationPages from "./pages/admin/pages/DestinationPage/DestinationPages";
 import AppointmentsPage from "./pages/admin/pages/Rendez-vous/AppointmentsPage";
 import ScrollToTop from "./components/content/ScrollToTop";
+import TestimonialsPage from "./pages/Temoignages/TestimonialsPage";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/a-propos" element={<AboutPage />} />
           <Route path="/nos-destinations" element={<DestinationPage />} />
+          <Route path="/temoignage" element={<TestimonialsPage />} />
           <Route path="/nous-contacter" element={<ContactPage />} />
           <Route path="/actualites" element={<BlogPage />} />
           <Route path="/actualites/:slug" element={<SinglePost />} />
