@@ -14,64 +14,58 @@ import { Link } from 'react-router-dom';
 
 const ServiceSection = () => {
   return (
-    <section className="relative py-24 overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[200%] bg-blue-50/50 -skew-y-12" />
-      </div>
-      
-      <div className="container px-4 sm:px-6 lg:px-8 mt[-100px]">
-        {/* Header section with enhanced styling */}
-        <div className="relative text-center space-y-4 mb-16  mt[-100px]">
-          <h2 className="text-3xl font-bold tracking-tighter text-gray-900 sm:text-4xl md:text-5xl bg-clip-text ">
+    <section className="py-24 bg-gradient-to-b from-blue-50/50 to-white">
+      <div className="container mx-auto px-4">
+        <div className="text-center space-y-4 mb-16">
+          <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Nos Services
           </h2>
-          <p className="text-gray-600 md:text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Découvrez notre gamme complète de services pour rendre votre voyage inoubliable
           </p>
         </div>
 
-        {/* Services grid with enhanced cards */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {services.map((service, index) => (
             <Card 
               key={service.title}
-              className="group hover:shadow-lg transition-all duration-300 border-t-4 border-t-transparent hover:border-primary"
+              className="group hover:shadow-xl transition-all duration-300 hover:translate-y-[-4px]"
             >
-              <CardHeader>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-14 h-14 rounded-lg bg-blue-100 flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
-                    <service.icon className="w-8 h-8 text-primary group-hover:text-white transition-colors duration-300" />
+              <CardHeader className="space-y-3 p-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300">
+                    <service.icon className="w-6 h-6 text-primary" />
                   </div>
-                  <span className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                  <span className="text-xs font-medium text-primary/80 bg-primary/5 px-3 py-1 rounded-full">
                     {`Service ${index + 1}`}
                   </span>
                 </div>
-                <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors duration-300">
+                <CardTitle className="text-xl font-bold text-gray-900">
                   {service.title}
                 </CardTitle>
-                <CardDescription className="text-gray-600 mt-2 leading-relaxed">
+                <CardDescription className="text-gray-600 text-sm leading-relaxed">
                   {service.description}
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              
+              <CardContent className="p-4 pt-0">
                 <ul className="space-y-2">
                   {service.features?.map((feature, idx) => (
-                    <li key={idx} className="flex items-center text-sm text-gray-600">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2" />
-                      {feature}
+                    <li key={idx} className="flex items-center text-gray-600 group/item">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary/30 mr-2 group-hover/item:bg-primary transition-colors duration-300" />
+                      <span className="text-xs">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </CardContent>
-              <CardFooter>
+              
+              <CardFooter className="p-4 pt-0">
                 <Link to={service.link} className="w-full">
                   <Button 
-                    variant="outline" 
-                    className="w-full group/button hover:bg-primary hover:text-white transition-all duration-300"
+                    className="w-full group/button bg-white hover:bg-primary text-primary hover:text-white border border-primary text-sm transition-all duration-300 h-9"
                   >
-                    <span>En savoir plus</span>
-                    <ArrowRight className="w-4 h-4 ml-2 transform group-hover/button:translate-x-1 transition-transform duration-300" />
+                    <span className="font-medium">En savoir plus</span>
+                    <ArrowRight className="w-3 h-3 ml-2 transition-transform duration-300 group-hover/button:translate-x-1" />
                   </Button>
                 </Link>
               </CardFooter>
