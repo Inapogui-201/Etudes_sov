@@ -38,7 +38,7 @@ const Navigation = () => {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Services</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="bg-transparent">Services</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4">
                     {services.map((service) => (
@@ -68,6 +68,12 @@ const Navigation = () => {
             className="text-sm font-medium hover:text-primary"
           >
             Destination
+          </Link>
+          <Link
+            to={"/temoignage"}
+            className="text-sm font-medium hover:text-primary"
+          >
+            Temoignages
           </Link>
           <Link
             to={"/nous-contacter"}

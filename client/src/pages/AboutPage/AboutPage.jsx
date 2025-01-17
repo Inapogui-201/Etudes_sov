@@ -184,7 +184,7 @@ const AboutPage = () => {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-              Blog & Actualités
+              Evenements
             </h2>
             <p className="mt-4 text-gray-500">
               Restez informé des dernières nouvelles et découvrez nos conseils
