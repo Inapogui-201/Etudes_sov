@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,15 +20,48 @@ import { continents, destinations } from "@/lib/data";
 import { Search } from "lucide-react";
 import ServiceSection from "@/components/content/ServiceSection";
 import PartenaireSection from "@/components/content/PartenaireSection";
+import { Link } from "react-router-dom";
 
 const DestinationPage = () => {
   const [selectedDestination, setSelectedDestination] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedContinent, setSelectedContinent] = useState("all");
+  const [destinations, setDestinations] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+      setLoading(true);
+      setError(null);
+    
+      const fetchDestinations = async () => {
+        try {
+          const response = await fetch(`/api/destinations`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch destinations");
+          }
+          const data = await response.json();
+          
+          const destinationsData = data.destinations || [];
+          setDestinations(destinationsData); 
+          //console.log(destinationsData);
+          
+        } catch (error) {
+          setError(error.message || "Error fetching destinations");
+        } finally {
+          setLoading(false);
+        }
+      };
+    
+      fetchDestinations();
+    }, []);
+
 
   const filteredDestinations = destinations.filter((destination) => {
+    //console.log("destination: ", destination.continent);
+    
     const matchesSearch =
-      destination.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      destination.continent.toLowerCase().includes(searchQuery.toLowerCase()) ||
       destination.shortDescription
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
@@ -94,20 +127,18 @@ const DestinationPage = () => {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filteredDestinations.map((destination) => (
             <Card key={destination.id} className="overflow-hidden">
-              <div className="relative aspect-video">
+              <div className="relative aspect-video w-full h-48">
                 <img
                   src={destination.image}
                   alt={destination.title}
                   fill
-                  className="object-cover"
+                  className="object-cover w-full h-full"
                 />
               </div>
               <CardContent className="p-4">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-xl font-bold">{destination.title}</h3>
-                  <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-                    {destination.rating} / 5
-                  </span>
+                 
                 </div>
                 <p className="text-gray-500">{destination.shortDescription}</p>
                 <p className="font-semibold mt-2">{destination.price}</p>
@@ -140,9 +171,7 @@ const DestinationPage = () => {
         <DialogContent className="max-w-3xl mx-auto p-6 overflow-y-auto max-h-[80vh]">
           <DialogHeader>
             <DialogTitle>{selectedDestination.title}</DialogTitle>
-            <DialogDescription>
-              {selectedDestination.duration}
-            </DialogDescription>
+          
           </DialogHeader>
           <div className="mt-4 w-full h-64">
             <img
@@ -155,13 +184,12 @@ const DestinationPage = () => {
           <div className="space-y-4">
             <p>{selectedDestination.fullDescription}</p>
             <div className="flex items-center justify-between">
-              <p className="font-bold text-lg">{selectedDestination.price}</p>
-              <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-                Note: {selectedDestination.rating} / 5
-              </span>
+           
             </div>
           </div>
-          <Button className="w-full mt-4">Réserver maintenant</Button>
+          <Link to={"/nous-contacter"}>
+                <Button className="w-full mt-4">Nous contacter</Button>
+              </Link>
         </DialogContent>
       )}
     </Dialog>

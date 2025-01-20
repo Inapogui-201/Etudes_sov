@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Target, Award, Clock } from "lucide-react";
@@ -9,6 +9,31 @@ import PartenaireSection from "@/components/content/PartenaireSection";
 import { Link } from "react-router-dom";
 
 const AboutPage = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(`/api/events`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch events");
+        }
+        const data = await response.json();
+        setEvents(data.slice(0,3));
+        //console.log(data);
+      } catch (error) {
+        setError(error.message || "Failed to fetch events");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
   return (
     <main>
       {/* Hero Section */}
@@ -191,58 +216,48 @@ const AboutPage = () => {
               voyage
             </p>
           </div>
-          <div className="grid gap-8 md:grid-cols-3 mb-12">
-            {[
-              {
-                title: "Les 10 plus belles plages de Bali",
-                date: "12 Jan 2024",
-                image:
-                  "https://cdn.pixabay.com/photo/2017/05/22/07/20/press-2333329_640.jpg",
-                description:
-                  "Découvrez notre sélection des plus belles plages de Bali pour votre prochain voyage.",
-              },
-              {
-                title: "Guide de la street food à Bangkok",
-                date: "10 Jan 2024",
-                image:
-                  "https://cdn.pixabay.com/photo/2015/10/17/20/52/work-993353_640.jpg",
-                description:
-                  "Les meilleurs spots pour déguster la cuisine de rue thaïlandaise.",
-              },
-              {
-                title: "Safari en Tanzanie : Guide complet",
-                date: "8 Jan 2024",
-                image:
-                  "https://cdn.pixabay.com/photo/2013/05/17/07/12/elephant-111695_640.jpg",
-                description:
-                  "Tout ce que vous devez savoir pour organiser votre safari en Tanzanie.",
-              },
-            ].map((post) => (
+          {loading && (
+          <div className="text-center text-xl">Chargement des évenements...</div>
+        )}
+
+{error && (
+          <div className="text-center text-red-500 text-xl">{error}</div>
+        )}
+{!loading && !error && (
+   <div className="grid gap-8 md:grid-cols-3 mb-12">
+            {events.map((post) => (
               <Card key={post.title} className="overflow-hidden">
-                <div className="relative aspect-video">
+                <Link to={``} className="relative aspect-video cursor-pointer">
                   <img
-                    src={post.image}
+                    src={post.medias}
                     alt={post.title}
                     fill
                     className="object-cover"
                   />
-                </div>
+                </Link>
                 <CardContent className="p-4">
-                  <p className="text-sm text-gray-500">{post.date}</p>
+                  <p className="text-sm text-gray-500">
+                    {new Date(post.createdAt).toLocaleDateString("fr-FR", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>{" "}
                   <h3 className="font-semibold text-lg mt-2">{post.title}</h3>
-                  <p className="text-sm text-gray-500 mt-2">
-                    {post.description}
-                  </p>
+                  <p className="text-sm text-gray-500 mt-2">{post.content.slice(0,50)}{"..."}</p>
                 </CardContent>
               </Card>
             ))}
           </div>
+)}
+         
           <div className="text-center">
-            <Link to={"/actualites"}>  <Button variant="outline" size="lg">
-              Voir plus d'articles
-            </Button>
+            <Link to={"/actualites"}>
+              {" "}
+              <Button variant="outline" size="lg">
+                Voir plus d'articles
+              </Button>
             </Link>
-          
           </div>
         </div>
       </section>

@@ -4,6 +4,9 @@ import path from "path";
 import cors from "cors"
 import connectDB from "./utils/database.js";
 import AuthRoute from "./routes/AuthRoute.js"
+import DestinationRoute from "./routes/DestinationRoute.js"
+import TestimonyRoute from "./routes/testimonyRoute.js"
+import EventRoute from "./routes/EventRoute.js"
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -21,6 +24,11 @@ connectDB()
 
 //Routes
 app.use("/api/admin", AuthRoute)
+app.use("/api/destinations", DestinationRoute)
+app.use("/api/testimony", TestimonyRoute)
+app.use("/api/events", EventRoute)
+
+
 
 
 // Fichiers statiques (frontend)

@@ -1,5 +1,5 @@
-import { errorHandler } from "../../config/errorHandler.js";
-import Testimony from "../../models/TestimonyModel.js";
+import Testimony from "../model/TestimonyModel.js";
+
 
 export const addTestimony = async (req, res, next) => {
   try {
@@ -31,7 +31,7 @@ export const getAllTestimony = async (req, res, next) => {
 
     // Vérifier si aucun témoignage n'est trouvé
     if (testimonies.length === 0) {
-      return res.status(404).json({
+      return res.status(200).json({
         message: "Aucun témoignage trouvé.",
       });
     }

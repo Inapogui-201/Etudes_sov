@@ -1,58 +1,47 @@
-import React from 'react';
-import { Star, Quote } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { Star, Quote } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const TestimonialsPage = () => {
-  // Données des témoignages
-  const testimonials = [
-    {
-      id: 1,
-      name: "Marie Laurent",
-      role: "Voyageuse régulière",
-      image: "/api/placeholder/80/80",
-      rating: 5,
-      content: "Un service exceptionnel ! L'équipe a su répondre à toutes mes attentes et même au-delà. Je recommande vivement leur expertise pour l'organisation de voyages.",
-      location: "Paris, France"
-    },
-    {
-      id: 2,
-      name: "Thomas Martin",
-      role: "Entrepreneur",
-      image: "/api/placeholder/80/80",
-      rating: 5,
-      content: "Des prestations de qualité et un suivi personnalisé tout au long du séjour. Une agence qui sait prendre soin de ses clients.",
-      location: "Lyon, France"
-    },
-    {
-      id: 3,
-      name: "Sophie Dubois",
-      role: "Famille de 4",
-      image: "/api/placeholder/80/80",
-      rating: 5,
-      content: "Notre voyage en famille a été parfaitement organisé. Chaque détail a été pensé pour le confort des enfants. Une expérience mémorable !",
-      location: "Bordeaux, France"
-    },
-    {
-      id: 4,
-      name: "Pierre Dupont",
-      role: "Couple en lune de miel",
-      image: "/api/placeholder/80/80",
-      rating: 5,
-      content: "Notre lune de miel était absolument parfaite. Des destinations de rêve et un service irréprochable. Merci pour ces moments magiques !",
-      location: "Nice, France"
-    }
-  ];
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    const fetchTestimony = async () => {
+      try {
+        const response = await fetch(`/api/testimony/all`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch testimony");
+        }
+        const data = await response.json();
+
+        const testimonyData = data.testimonies || [];
+        setTestimonials(testimonyData);
+        //console.log(testimonyData);
+      } catch (error) {
+        setError(error.message || "Error fetching testimony");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimony();
+  }, []);
 
   return (
     <div className="min-h-screen">
       {/* Section Hero avec image de fond */}
       <section className="relative h-[60vh] flex items-end justify-center pb-20">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url('https://images.pexels.com/photos/3769146/pexels-photo-3769146.jpeg?auto=compress&cs=tinysrgb&w=600')`,
-            backgroundPosition: 'center',
-            filter: 'brightness(0.7)'
+            backgroundPosition: "center",
+            filter: "brightness(0.7)",
           }}
         />
         <div className="relative text-center text-white space-y-4 px-4">
@@ -89,37 +78,55 @@ const TestimonialsPage = () => {
       {/* Section Témoignages écrits */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {testimonials.map((testimonial) => (
-              <Card key={testimonial.id} className="hover:shadow-lg transition-shadow duration-300">
-                <CardContent className="p-6">
-                  <div className="flex space-x-4 items-start">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-semibold text-lg">{testimonial.name}</h3>
-                          <p className="text-sm text-gray-500">{testimonial.role}</p>
-                        </div>
-                        <Quote className="w-8 h-8 text-primary/20" />
-                      </div>
-                      <div className="flex items-center mt-2 mb-4">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
-                      <p className="text-gray-600 leading-relaxed">{testimonial.content}</p>
-                      <p className="mt-4 text-sm text-gray-500">{testimonial.location}</p>
-                    </div>
+          {loading ? (
+            <div className="text-center text-xl">
+              Chargement des témoignages...
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-500 text-xl">{error}</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Vérification si au moins un témoignage valide existe */}
+            {testimonials.filter(testimonial => testimonial?.action).length === 0 ? (
+              <p className="text-center">Pas de témoignage</p>
+            ) : (
+              testimonials.map((testimonial) => (
+                // Affichage uniquement si action est true
+                testimonial?.action && (
+                  <div key={testimonial._id}>
+                    {testimonial.category === "text" ? (
+                      <Card className="hover:shadow-lg transition-shadow duration-300">
+                        <CardContent className="p-6">
+                          <div className="flex space-x-4 items-start">
+                            <img
+                              src={testimonial.medias}
+                              alt="Testimonial"
+                              className="w-16 h-16 rounded-full object-cover"
+                            />
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <h3 className="font-semibold text-lg">{testimonial.author}</h3>
+                                </div>
+                                <Quote className="w-8 h-8 text-primary/20" />
+                              </div>
+                              <p className="text-gray-600 leading-relaxed">{testimonial.message}</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ) : (
+                      <video controls width="250">
+                        <source src={testimonial.medias} type="video/webm" />
+                      </video>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                )
+              ))
+            )}
           </div>
+          
+          )}
         </div>
       </section>
     </div>

@@ -98,11 +98,11 @@ export const destinations = [
 ];
 
 export const continents = [
-  { value: "europe", label: "Europe" },
-  { value: "asie", label: "Asie" },
-  { value: "amerique", label: "Amérique" },
-  { value: "afrique", label: "Afrique" },
-  { value: "oceanie", label: "Océanie" },
+  { value: "Europe", label: "Europe" },
+  { value: "Asie", label: "Asie" },
+  { value: "Amerique", label: "Amérique" },
+  { value: "Afrique", label: "Afrique" },
+  { value: "Oceanie", label: "Océanie" },
 ]
 
 

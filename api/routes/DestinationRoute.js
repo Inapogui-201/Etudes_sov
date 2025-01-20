@@ -1,13 +1,13 @@
 import express from 'express';
-import { getAllDestinations, getDestinationByTitle, newDestination, updateDestination, deleteDestination } from '../controllers/destination/DestinationController.js';
-import { verifyAdmin } from '../middleware/verify.js';
+import { VerifyAdmin } from '../middleware/verifyAdmin.js';
+import { deleteDestination, getAllDestinations, newDestination } from '../controller/DestinationController.js';
+
 
 const router = express.Router();
 
+router.post('/new', VerifyAdmin, newDestination);
 router.get('/', getAllDestinations);
-router.get('/:title', verifyAdmin, getDestinationByTitle);
-router.post('/new', verifyAdmin, newDestination);
-router.put('/:title', verifyAdmin, updateDestination);
-router.delete('/:title', verifyAdmin, deleteDestination);
+router.delete("/delete/:title", deleteDestination)
+
 
 export default router;

@@ -194,6 +194,17 @@ const DestinationPages = () => {
                   required
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="continent" className="text-sm font-medium">Continent</Label>
+                <Input
+                  id="continent"
+                  name="continent"
+                  value={formData.country}
+                  onChange={handleChange}
+                  className="w-full"
+                  required
+                />
+              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="title" className="text-sm font-medium">Description</Label>
@@ -205,50 +216,6 @@ const DestinationPages = () => {
                   className="w-full min-h-[100px] resize-none"
                   required
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="price" className="text-sm font-medium">Prix (€)</Label>
-                <Input
-                  id="price"
-                  name="price"
-                  type="number"
-                  value={formData.price}
-                  onChange={handleChange}
-                  className="w-full"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="duration" className="text-sm font-medium">Durée</Label>
-                <Input
-                  id="duration"
-                  name="duration"
-                  value={formData.duration}
-                  onChange={handleChange}
-                  className="w-full"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="rating" className="text-sm font-medium">Note (sur 5)</Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    id="rating"
-                    name="rating"
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    max="5"
-                    value={formData.rating}
-                    onChange={handleChange}
-                    className="w-full"
-                    required
-                  />
-                  <Star className="w-5 h-5 text-yellow-500" />
-                </div>
               </div>
 
               <div className="space-y-2">
