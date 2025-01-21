@@ -4,15 +4,13 @@ import { addTestimony, deleteTestimony, getAllTestimony, markTestimony, updateTe
 
 const router = express.Router();
 
-router.post("/new", addTestimony);
-router.get("/all",getAllTestimony);
-router.get("/",VerifyAdmin,getAllTestimony);
 
+router.get("/all",getAllTestimony);
+router.post("/new",VerifyAdmin, addTestimony);
+router.get("/",getAllTestimony);
 router.patch('/:id/mark',VerifyAdmin, markTestimony);
 router.delete('/:id/delete',VerifyAdmin, deleteTestimony);
-router.put('/:id/update',VerifyAdmin, updateTestimony);
-
-
+router.patch('/:id/update',VerifyAdmin, updateTestimony);
 
 
 export default router;

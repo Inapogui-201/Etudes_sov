@@ -87,7 +87,7 @@ const SanitairePage = () => {
           Si vous êtes dans une situation d'urgence médicale, contactez-nous immédiatement. Nous sommes là pour vous assurer une prise en charge rapide et sécurisée.
         </p>
         <Button className="mt-8 px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-200">
-          <Link to={"/prendre-rendez-vous"}>Prenez rendez-vous</Link>
+          <Link to={"/nous-contacter"}>Nous contacter</Link>
           
         </Button>
       </div>

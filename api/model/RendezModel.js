@@ -1,27 +1,35 @@
 import mongoose from "mongoose";
 
-const RendezModel = new mongoose.Schema({
-	fullname: {
-		type: String,
-		required: true
-	},
-	number: {
-		type: String,
-		required: true,
-		unique: true
-	},
-	email: {
-		type: String,
-		required: true,
-		unique: true,
-	},
-	dateRendez: {
-		type: Date,
-		required: true,
-	}
-}, { timeseries: true });
+const RendezModel = new mongoose.Schema(
+  {
+    fname: {
+      type: String,
+      required: true,
+    },
+    lname: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    service: {
+      type: String,
+      required: true,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+  },
+  { timeseries: true }
+);
 
+const Appointment = mongoose.model("Appointment", RendezModel);
 
-const RendezVous = mongoose.model("Rendez-vous", RendezModel);
-
-export default RendezVous;
+export default Appointment;

@@ -279,24 +279,24 @@ export const timeSlots = [
 
 export const appointmentTypes = [
   {
-    value: "voyage-sur-mesure",
-    label: "Voyage sur mesure",
-    description: "Créez votre voyage personnalisé avec nos experts"
+    value: "etudier-à-l-étranger",
+    label: "Étudier à l'étranger",
+    description: "Des conseils et des services pour étudier dans les meilleures universités à l'étranger."
   },
   {
-    value: "conseil-destination",
-    label: "Conseil en destination",
-    description: "Obtenez des conseils pour choisir votre destination"
+    value: "tourisme",
+    label: "Tourisme",
+    description: "Des voyages organisés et des séjours sur mesure pour découvrir le monde."
   },
   {
-    value: "reservation",
-    label: "Réservation de voyage",
-    description: "Réservez un voyage parmi nos offres"
+    value: "évacuation-sanitaire",
+    label: "Évacuation Sanitaire",
+    description: "Une assistance médicale et un rapatriement en cas d'urgence à l'étranger."
   },
   {
-    value: "groupe",
-    label: "Voyage en groupe",
-    description: "Organisez un voyage pour votre groupe"
+    value: "billeterie",
+    label: "Billeterie",
+    description: "Les meilleurs tarifs pour vos billets d'avion, de train et de bus."
   }
 ]
 

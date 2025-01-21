@@ -1,9 +1,10 @@
 import express from "express";
-import { AjouterRendezVous, getAllRendezVous } from "../controllers/rendez-vous/RendezController.js";
+import { VerifyAdmin } from "../middleware/verifyAdmin.js";
+import { addRendezVous, getAllRendezVous } from "../controller/RendezController.js";
 
 const router = express.Router();
 
-router.post("/ajouter", AjouterRendezVous);
-router.get("/all", getAllRendezVous);
+router.post("/new", addRendezVous );
+router.get("/",VerifyAdmin, getAllRendezVous);
 
 export default router;

@@ -19,12 +19,15 @@ const generateSlug = (title) => {
     .replace(/-+/g, '-'); 
 };
 
+//mise à jour du slug
+const ensureSlug = (title, existingSlug) => { return existingSlug || generateSlug(title); };
+
+// Ajouter un nouvel événement
 export const addEvent = async (req, res, next) => {
   const { error } = eventSchemaJoi.validate(req.body);
   if (error) {
     return next(errorHandler(400, error.details[0].message || "Invalid Event"));
   }
-
   const { title, medias, content } = req.body;
 
     // Générer le slug à partir du titre
@@ -51,6 +54,7 @@ export const addEvent = async (req, res, next) => {
   }
 };
 
+// Modifier un événement
 export const getAllEvents = async (req, res, next) => {
   try {
     const events = await Event.find();
@@ -67,7 +71,7 @@ export const getAllEvents = async (req, res, next) => {
   }
 };
 
-
+//
 export const getEventById = async (req, res, next) => {
   const { id } = req.params;
   
@@ -82,19 +86,43 @@ export const getEventById = async (req, res, next) => {
   }
 };
 
+  // Récupérer un événement par son slug
+export const getEventBySlug = async (req, res, next) => { 
+  const { slug } = req.params;
+  try {
+    const event = await Event.findOne({ slug });
+    if (!event) {
+      return next(errorHandler(404, "Événement non trouvé"));
+    }
+    res.status(200).json(event);
+    
+  } catch (error) {
+    next(errorHandler(500, "Erreur lors de la récupération de l'événement"));
+  }
+}
+
+  // Modifier un événement par son slug
 export const updateEvent = async (req, res, next) => {
   const { id } = req.params;
   const { title, medias, content } = req.body;
-
   try {
-    const updatedEvent = await Event.findByIdAndUpdate(id, { title, medias, content }, { new: true });
-    if (!updatedEvent) {
+  // Rechercher l'événement 
+    const event = await Event.findById(id);
+    if (!event) {
       return next(errorHandler(404, "Événement non trouvé"));
     }
-    res.status(200).json({
-      message: "Événement mis à jour avec succès",
-      event: updatedEvent,
-    });
+    // Déterminer si le slug doit être généré ou mis à jour 
+    const slug = ensureSlug(title, event.slug);
+    // Mettre à jour l'événement 
+    const updatedEvent = await Event.findByIdAndUpdate(id, {
+      title,
+      medias,
+      content,
+      slug
+    }, { new: true });
+    if (!updatedEvent) {
+      return next(errorHandler(404, "Événement non trouvé"));
+    } res.status(200).json({ message: "Événement mis à jour avec succès", event: updatedEvent, });
   } catch (error) {
     next(errorHandler(500, "Erreur lors de la mise à jour de l'événement"));
   }

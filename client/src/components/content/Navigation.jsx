@@ -75,16 +75,16 @@ const Navigation = () => {
           >
             Temoignages
           </Link>
-          <Link
+          {/* <Link
             to={"/nous-contacter"}
             className="text-sm font-medium hover:text-primary"
           >
             Contact
-          </Link>
+          </Link> */}
         </nav>
 
-        <Link to={"/prendre-rendez-vous"} className="hidden md:block">
-          <Button>Rendez-vous</Button>
+        <Link to={"/nous-contacter"} className="hidden md:block">
+          <Button>Nous Contacter</Button>
         </Link>
 
         {/* Mobile Navigation */}

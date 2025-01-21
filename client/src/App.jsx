@@ -22,6 +22,8 @@ import DestinationPages from "./pages/admin/pages/DestinationPage/DestinationPag
 import AppointmentsPage from "./pages/admin/pages/Rendez-vous/AppointmentsPage";
 import ScrollToTop from "./components/content/ScrollToTop";
 import TestimonialsPage from "./pages/Temoignages/TestimonialsPage";
+import EventPages from "./pages/admin/pages/BlogPage/BlogPages";
+import TestimonyPage from "./pages/admin/pages/TestimonyPage/TestimonyPage";
 
 const App = () => {
   return (
@@ -56,9 +58,10 @@ const App = () => {
         <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard/" element={<HomePages />} />
           <Route path="/admin/mon-profil/" element={<ProfilPage />} />
-          <Route path="/admin/mon-blog/" element={<BlogPages />} />
+          <Route path="/admin/mon-blog/" element={<EventPages />} />
           <Route path="/admin/mon-destination/" element={<DestinationPages/>} />
-          <Route path="/admin/mon-rdv/" element={<AppointmentsPage/>} />
+          <Route path="/admin/mon-rdv/" element={<AppointmentsPage />} />
+            <Route path="/admin/nos-temoignages/" element={ <TestimonyPage />}  />
         </Route>
         </Route>
 

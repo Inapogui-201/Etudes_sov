@@ -121,8 +121,8 @@ const EtudePage = () => {
             Vous êtes prêt à commencer votre aventure à l'étranger ? Prenez rendez-vous avec notre équipe pour discuter de votre projet et démarrer votre parcours d'études à l'international.
           </p>
           <button className="mt-8 mx-auto px-6 py-3 bg-primary text-white rounded-lg flex items-center justify-center gap-2 ">
-            <Link className="flex items-center" to={"/prendre-rendez-vous"}><Calendar size={20} />
-            Prendre rendez-vous</Link>
+            <Link className="flex items-center" to={"/nous-contacter"}><Calendar size={20} />
+            Nous contacter</Link>
           </button>
         </div>
       </section>

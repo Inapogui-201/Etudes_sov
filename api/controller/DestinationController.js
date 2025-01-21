@@ -22,8 +22,6 @@ export const newDestination = async (req, res, next) => {
   }
 
   const { title, continent, image, shortDescription, fullDescription } = req.body;
-    console.log(req.body);
-
 
   try {
     const newDestination = new Destination({

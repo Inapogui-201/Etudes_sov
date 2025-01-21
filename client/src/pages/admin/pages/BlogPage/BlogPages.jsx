@@ -1,179 +1,206 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Pencil, Trash2, Upload, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import UploadWidget from '@/lib/Upload';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { toast, Toaster } from 'sonner';
 
-const BlogPages = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [editingBlog, setEditingBlog] = useState(null);
+const EventPages = () => {
+  const [events, setEvents] = useState([]);
+  const [editingEvent, setEditingEvent] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
-  const fileInputRef = useRef(null);
-  
+
   const initialFormState = {
     title: '',
-    description: '',
-    category: '',
-    readTime: '',
-    image: null,
+    content: '',
+    medias: null,
     imageUrl: ''
   };
-  
+
   const [formData, setFormData] = useState(initialFormState);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData(prev => ({
-        ...prev,
-        image: file,
-        imageUrl: URL.createObjectURL(file)
-      }));
-      setPreviewImage(URL.createObjectURL(file));
-    }
-  };
+  // Fonction pour récupérer les événements au chargement du composant
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/api/events');
+        const data = await response.json();
+        setEvents(data);
+      } catch (error) {
+        toast.error('Erreur lors du chargement des événements');
+      }
+    };
+    fetchEvents();
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (editingBlog) {
-      setBlogs(blogs.map(blog => 
-        blog.id === editingBlog.id ? { ...formData, id: blog.id } : blog
-      ));
-      setEditingBlog(null);
-    } else {
-      const newBlog = {
-        ...formData,
-        id: Date.now(),
-        date: new Date().toISOString()
-      };
-      setBlogs([...blogs, newBlog]);
+  const handleImageUpload = (imageUrl) => {
+    if (!imageUrl) {
+      toast.error("Aucune image sélectionnée");
+      return;
     }
-    setFormData(initialFormState);
-    setPreviewImage(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
-  const handleEdit = (blog) => {
-    setEditingBlog(blog);
-    setFormData(blog);
-    setPreviewImage(blog.imageUrl);
-  };
-
-  const handleDelete = (blogId) => {
-    setBlogs(blogs.filter(blog => blog.id !== blogId));
+    setFormData((prevData) => ({
+      ...prevData,
+      medias: imageUrl
+    }));
+    setPreviewImage(imageUrl);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
+    setFormData(prevState => ({
+      ...prevState,
       [name]: value
     }));
   };
 
-  const cancelEdit = () => {
-    setEditingBlog(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { title, medias, content } = formData;
+
+    if (editingEvent) {
+      // Mettre à jour un événement existant
+      try {
+        const response = await fetch(`/api/events/${editingEvent._id}/update`, {
+          method: 'PATCH',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, medias, content })
+        });
+        const updatedEvent = await response.json();
+        setEvents(events.map(event => event._id === editingEvent._id ? updatedEvent.event : event));
+        toast.success('Événement mis à jour avec succès');
+      } catch (error) {
+        toast.error('Erreur lors de la mise à jour de l\'événement');
+      }
+    } else {
+      // Ajouter un nouvel événement
+      try {
+        const response = await fetch('/api/events/new', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, medias, content })
+        });
+        const newEvent = await response.json();
+        setEvents([...events, newEvent.event]);
+        toast.success('Événement ajouté avec succès');
+      } catch (error) {
+        toast.error('Erreur lors de l\'ajout de l\'événement');
+      }
+    }
+
+    // Réinitialiser le formulaire après l'envoi
     setFormData(initialFormState);
     setPreviewImage(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+    setEditingEvent(null);
+  };
+
+  const handleEdit = (event) => {
+    setEditingEvent(event);
+    setFormData({
+      title: event.title,
+      content: event.content,
+      medias: event.medias,
+      imageUrl: event.medias
+    });
+    setPreviewImage(event.medias);
+  };
+
+  const cancelEdit = () => {
+    setEditingEvent(null);
+    setFormData(initialFormState);
+    setPreviewImage(null);
+  };
+
+  const handleDelete = async (eventId) => {
+    try {
+      const response = await fetch(`/api/events/${eventId}/delete`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      if (response.ok) {
+        setEvents(events.filter(event => event._id !== eventId));
+        toast.success('Événement supprimé avec succès');
+      } else {
+        toast.error('Erreur lors de la suppression de l\'événement');
+      }
+    } catch (error) {
+      toast.error('Erreur lors de la suppression de l\'événement');
     }
   };
 
   return (
     <div className="flex flex-col-reverse lg:flex-row gap-8 p-4 md:p-6 min-h-screen bg-gray-50">
-      {/* Blog Cards Section - Left Side */}
+      <Toaster position="top-right" />
+      
+      {/* Section des événements */}
       <div className="w-full lg:w-2/3">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {blogs.map((blog) => (
-            <Card key={blog.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
-              {blog.imageUrl && (
-                <div className="relative">
-                  <img 
-                    src={blog.imageUrl} 
-                    alt={blog.title}
-                    className="h-48 w-full object-cover"
-                    onError={(e) => {
-                      e.target.src = "/api/placeholder/400/300";
-                    }}
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                    <div className="flex justify-between items-center text-sm text-white">
-                      <span>{new Date(blog.date).toLocaleString()}</span>
-                      <span>{blog.readTime} min</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              <CardContent className="p-6">
-                <div className="mb-2">
-                  <span className="inline-block px-3 py-1 text-sm font-medium text-gray-700 bg-gray-100 rounded-full">
-                    {blog.category}
-                  </span>
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900">{blog.title}</h3>
-                <p className="text-gray-600 mb-6 line-clamp-3">{blog.description}</p>
-
-                <div className="flex justify-end space-x-3">
-                  <Button 
-                    variant="outline" 
-                    size="icon"
-                    onClick={() => handleEdit(blog)}
-                    className="hover:bg-gray-100"
-                  >
+          {events.map((event) => (
+            <Card key={event._id} className="overflow-hidden group hover:shadow-lg transition-all duration-300 border-0 bg-white rounded-xl">
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src={event.medias || '/api/placeholder/800/500'}
+                  alt={event.title}
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => {
+                    e.target.src = "/api/placeholder/800/500";
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              </div>
+              <CardContent className="p-6 space-y-4">
+                <h2 className="text-2xl font-bold text-gray-900">{event.title}</h2>
+                <p className="text-gray-600">{event.content}</p>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="icon" onClick={() => handleEdit(event)}>
                     <Pencil className="h-4 w-4" />
                   </Button>
-
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button 
-                        variant="destructive" 
-                        size="icon"
-                        className="hover:bg-red-600"
-                      >
+                      <Button variant="outline" size="icon" className="h-8 w-8 hover:bg-red-50 hover:text-red-600 border-red-200">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md">
                       <DialogHeader>
-                        <DialogTitle className="text-xl font-bold">Confirmer la suppression</DialogTitle>
-                        <DialogDescription className="text-gray-600">
-                          Êtes-vous sûr de vouloir supprimer ce blog ? Cette action est irréversible.
+                        <DialogTitle>Confirmer la suppression</DialogTitle>
+                        <DialogDescription>
+                          Êtes-vous sûr de vouloir supprimer cet événement ? Cette action est irréversible.
                         </DialogDescription>
                       </DialogHeader>
-                      <DialogFooter className="gap-3">
-                        <Button variant="outline" onClick={() => handleDelete(blog.id)}>
+                      <DialogFooter>
+                        <Button variant="outline" onClick={() => handleDelete(event._id)}>
                           Confirmer la suppression
                         </Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
-                </div>                
-              </CardContent>            
+                </div>
+              </CardContent>
             </Card>
           ))}
-        </div>        
+        </div>
       </div>
 
-      {/* Form Section - Right Side */}
+      {/* Section du formulaire */}
       <div className="w-full lg:w-1/3 mb-8 lg:mb-0">
-        <Card className="sticky top-6">
-          <CardHeader className="space-y-2">
+        <Card className="sticky top-6 border-0 shadow-lg rounded-xl">
+          <CardHeader className="space-y-2 pb-4 border-b">
             <CardTitle className="text-2xl font-bold">
-              {editingBlog ? 'Modifier le blog' : 'Ajouter un nouveau blog'}
+              {editingEvent ? 'Modifier l\'événement' : 'Ajouter un événement'}
             </CardTitle>
             <CardDescription className="text-gray-600">
-              {editingBlog ? 'Modifiez les détails du blog' : 'Remplissez les détails pour créer un nouveau post'}
+              {editingEvent ? 'Modifiez les détails de l\'événement' : 'Ajoutez un nouvel événement'}
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="title" className="text-sm font-medium">Titre</Label>
@@ -188,72 +215,28 @@ const BlogPages = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-sm font-medium">Description</Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="w-full min-h-[100px]"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="category" className="text-sm font-medium">Catégorie</Label>
-                <Select 
-                  value={formData.category}
-                  onValueChange={(value) => 
-                    setFormData(prev => ({...prev, category: value}))
-                  }
-                  required
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Sélectionnez une catégorie" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="destination">Destination</SelectItem>
-                    <SelectItem value="gastronomie">Gastronomie</SelectItem>
-                    <SelectItem value="aventure">Aventure</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="readTime" className="text-sm font-medium">Temps de lecture (minutes)</Label>
-                <Input
-                  id="readTime"
-                  name="readTime"
-                  type="number"
-                  value={formData.readTime}
-                  onChange={handleChange}
-                  className="w-full"
-                  required
+                <Label htmlFor="content" className="text-sm font-medium">Contenu</Label>
+                <ReactQuill
+                  theme="snow"
+                  value={formData.content}
+                  onChange={content => setFormData(prev => ({ ...prev, content }))}
+                  placeholder="Écrivez le contenu ici..."
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="image" className="text-sm font-medium">Image</Label>
                 <div className="mt-2">
-                  <div className="flex items-center gap-4">
-                    <input
-                      type="file"
-                      id="image"
-                      ref={fileInputRef}
-                      onChange={handleImageChange}
-                      accept="image/*"
-                      className="hidden"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="w-full"
-                    >
-                      <Upload className="mr-2 h-4 w-4" />
-                      Choisir une image
-                    </Button>
-                  </div>
+                  <UploadWidget
+                    uwConfig={{
+                      multiple: false,
+                      cloudName: "do2qwucmp",
+                      uploadPreset: "estate",
+                      folder: "sovEtudes",
+                      allowedFormats: ["png", "jpeg", "jpg"],
+                    }}
+                    setImage={handleImageUpload}
+                  />
                   {previewImage && (
                     <div className="mt-4 relative">
                       <img
@@ -268,10 +251,7 @@ const BlogPages = () => {
                         className="absolute top-2 right-2"
                         onClick={() => {
                           setPreviewImage(null);
-                          setFormData(prev => ({...prev, image: null, imageUrl: ''}));
-                          if (fileInputRef.current) {
-                            fileInputRef.current.value = '';
-                          }
+                          setFormData(prev => ({ ...prev, medias: null }));
                         }}
                       >
                         <X className="h-4 w-4" />
@@ -283,9 +263,9 @@ const BlogPages = () => {
 
               <div className="flex gap-3 pt-4">
                 <Button type="submit" className="flex-1">
-                  {editingBlog ? 'Mettre à jour' : 'Ajouter le blog'}
+                  {editingEvent ? 'Mettre à jour' : 'Ajouter l\'événement'}
                 </Button>
-                {editingBlog && (
+                {editingEvent && (
                   <Button type="button" variant="outline" onClick={cancelEdit}>
                     Annuler
                   </Button>
@@ -294,9 +274,9 @@ const BlogPages = () => {
             </form>
           </CardContent>
         </Card>
-      </div>      
-    </div>    
+      </div>
+    </div>
   );
 };
 
-export default BlogPages;
+export default EventPages;

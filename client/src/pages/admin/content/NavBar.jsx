@@ -85,7 +85,7 @@ const NavBar = () => {
               <Button variant="ghost" className="flex items-center gap-2">
                 <Link to={"/admin/mon-blog/"} className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
-                Blog
+                Evenements
                 </Link>
               </Button>
               <Button variant="ghost" className="flex items-center gap-2">
@@ -101,8 +101,11 @@ const NavBar = () => {
                 </Link>
               </Button>
               <Button variant="ghost" className="flex items-center gap-2">
-                <Users className="h-4 w-4" />
-                Equipes
+                <Link to={"admin/nos-temoignages"}  className="flex items-center gap-2">
+                   <Users className="h-4 w-4" />
+                Témoignages
+                </Link>
+             
               </Button>
               <Button variant="ghost" className="flex items-center gap-2">
                 <Handshake className="h-4 w-4" />

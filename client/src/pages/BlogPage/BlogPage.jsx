@@ -23,7 +23,7 @@ const BlogPage = () => {
           throw new Error("Failed to fetch events");
         }
         const data = await response.json();
-        setEvents(data.slice(0, 3));
+        setEvents(data);
         //console.log(data);
       } catch (error) {
         setError(error.message || "Failed to fetch events");

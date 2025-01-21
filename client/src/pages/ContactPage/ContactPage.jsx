@@ -146,8 +146,7 @@ const ContactPage = () => {
                   <div>
                     <h3 className="font-semibold">Adresse</h3>
                     <p className="text-gray-500">
-                      123 Avenue des Voyages<br />
-                      75001 Paris, France
+                     45 rue atlas ETG4 n°16 maarif Casablanca,Maroc
                     </p>
                   </div>
                 </div>
@@ -155,14 +154,17 @@ const ContactPage = () => {
                   <Phone className="w-6 h-6 text-primary" />
                   <div>
                     <h3 className="font-semibold">Téléphone</h3>
-                    <p className="text-gray-500">+33 1 23 45 67 89</p>
+                      <p className="text-gray-500">+212 06 69 84 68 26</p>
+                    <p className="text-gray-500">+242 06 46 71 551</p>
+                    <p className="text-gray-500">+242 06 51 81 300</p>
+                      
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <Mail className="w-6 h-6 text-primary" />
                   <div>
                     <h3 className="font-semibold">Email</h3>
-                    <p className="text-gray-500">contact@travelco.com</p>
+                    <p className="text-gray-500">sovetudes2022@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -181,15 +183,14 @@ const ContactPage = () => {
 
             {/* Map */}
             <div className="aspect-video rounded-lg overflow-hidden bg-gray-100">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937604!2d2.292292615509614!3d48.858370079287475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1647874587931!5m2!1sfr!2sfr"
-                width="100%"
+   
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.8167474938473!2d-7.636514125662128!3d33.58410694230655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7d2eabad9236d%3A0x3d9e2698c1a15967!2s45%20Rue%20de%20l&#39;Atlas%2C%20Casablanca%2020100!5e0!3m2!1sfr!2sma!4v1737401981920!5m2!1sfr!2sma" 
+                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+                referrerPolicy="no-referrer-when-downgrade"></iframe>
             </div>
           </div>
         </div>

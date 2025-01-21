@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Target, Award, Clock } from "lucide-react";
+import { Users, Target, Award, Clock, Globe, MapPin } from "lucide-react";
 import ServiceSection from "@/components/content/ServiceSection";
 import MEMBER1 from "/images/member1.jpg";
 import { teams } from "@/lib/data";
@@ -60,13 +60,13 @@ const AboutPage = () => {
             <Card>
               <CardHeader className="space-y-2">
                 <Users className="w-8 h-8 text-primary" />
-                <CardTitle className="text-3xl font-bold">15k+</CardTitle>
-                <p className="text-sm text-gray-500">Clients Satisfaits</p>
+                <CardTitle className="text-3xl font-bold">1000+</CardTitle>
+                <p className="text-sm text-gray-500">Étudiants Accompagnés</p>
               </CardHeader>
             </Card>
             <Card>
               <CardHeader className="space-y-2">
-                <Target className="w-8 h-8 text-primary" />
+                <MapPin className="w-8 h-8 text-primary" />
                 <CardTitle className="text-3xl font-bold">50+</CardTitle>
                 <p className="text-sm text-gray-500">Destinations</p>
               </CardHeader>
@@ -74,15 +74,15 @@ const AboutPage = () => {
             <Card>
               <CardHeader className="space-y-2">
                 <Award className="w-8 h-8 text-primary" />
-                <CardTitle className="text-3xl font-bold">15</CardTitle>
+                <CardTitle className="text-3xl font-bold">5</CardTitle>
                 <p className="text-sm text-gray-500">Années d'expérience</p>
               </CardHeader>
             </Card>
             <Card>
               <CardHeader className="space-y-2">
-                <Clock className="w-8 h-8 text-primary" />
-                <CardTitle className="text-3xl font-bold">24/7</CardTitle>
-                <p className="text-sm text-gray-500">Support Client</p>
+                <Globe className="w-8 h-8 text-primary" />
+                <CardTitle className="text-3xl font-bold">20+</CardTitle>
+                <p className="text-sm text-gray-500">Pays partenaires</p>
               </CardHeader>
             </Card>
           </div>
@@ -126,7 +126,7 @@ const AboutPage = () => {
           <div className="grid gap-12 lg:grid-cols-2 items-center">
             <div className="relative aspect-square">
               <img
-                src={MEMBER1}
+                src="https://sovetudes.vercel.app/nkab.jpg"
                 alt="Sov étude agence voyage Président profil"
                 fill
                 className="object-cover h-[500px] w-[500px] rounded-lg"

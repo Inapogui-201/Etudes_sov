@@ -55,19 +55,17 @@ const HomePages = () => {
 
     setLoading(true);
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("title", title);
-      formDataToSend.append("continent", continent);
-      formDataToSend.append("image", image);
-      formDataToSend.append("shortDescription", shortDescription);
-      formDataToSend.append("fullDescription", fullDescription);
-
       const response = await fetch("/api/destinations/new", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formDataToSend),
-
+        body: JSON.stringify({
+          title,
+          continent,
+          image,
+          shortDescription,
+          fullDescription,
+        }),
       });
 
       if (!response.ok) {
@@ -78,18 +76,18 @@ const HomePages = () => {
       // Réinitialiser le formulaire après un envoi réussi
       setFormData({
         title: "",
-        continent:"",
+        continent: "",
         image: "",
         shortDescription: "",
         fullDescription: "",
-        
       });
     } catch (error) {
       toast.error(error.message || "Erreur lors de l'envoi");
     } finally {
       setLoading(false);
     }
-  };
+};
+
 
   return (
     <>
