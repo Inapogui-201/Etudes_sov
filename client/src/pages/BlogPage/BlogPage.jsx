@@ -81,7 +81,7 @@ const BlogPage = () => {
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
               <Card key={post.id} className="flex flex-col">
-                <div className="relative aspect-video">
+                <Link to={`/actualites/${post.slug}`} className="relative aspect-video cursor-pointer">
                   <img
                     src={post.medias}
                     alt={post.title}
@@ -89,7 +89,7 @@ const BlogPage = () => {
                     className="object-cover"
                   />
                  
-                </div>
+                </Link>
                 <CardContent className="flex-1 p-6">
                   <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
                     <span className="flex items-center gap-1">
@@ -104,7 +104,7 @@ const BlogPage = () => {
                   <h2 className="text-xl font-bold mb-2">{post.title}</h2>
                   <p className="text-gray-500">{post.content.slice(0,50)}{"..."}</p>
                 </CardContent>
-                <CardFooter className="p-6 pt-0">
+                {/* <CardFooter className="p-6 pt-0">
                   <Button asChild variant="outline" className="w-full">
                     <Link
                       to={`/actualites/${post.slug}`}
@@ -114,7 +114,7 @@ const BlogPage = () => {
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
-                </CardFooter>
+                </CardFooter> */}
               </Card>
             ))}
           </div>

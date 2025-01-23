@@ -227,7 +227,7 @@ const AboutPage = () => {
    <div className="grid gap-8 md:grid-cols-3 mb-12">
             {events.map((post) => (
               <Card key={post.title} className="overflow-hidden">
-                <Link to={``} className="relative aspect-video cursor-pointer">
+                <Link to={`/actualites/${post.slug}`} className="relative aspect-video cursor-pointer">
                   <img
                     src={post.medias}
                     alt={post.title}
@@ -244,7 +244,11 @@ const AboutPage = () => {
                     })}
                   </p>{" "}
                   <h3 className="font-semibold text-lg mt-2">{post.title}</h3>
-                  <p className="text-sm text-gray-500 mt-2">{post.content.slice(0,50)}{"..."}</p>
+                  {/* <p className="text-sm text-gray-500 mt-2">{post.content.slice(0,50)}{"..."}</p> */}
+                  <div
+                className="text-sm text-gray-500 mt-2"
+                dangerouslySetInnerHTML={{ __html: post.content.slice(0,50) }} 
+              />
                 </CardContent>
               </Card>
             ))}

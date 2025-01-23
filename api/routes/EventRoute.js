@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post("/new", VerifyAdmin, addEvent);
 router.get("/", getAllEvents);
-router.get("/:id", getEventById);
+//router.get("/:id", getEventById);
 router.get("/:slug", getEventBySlug);
 router.delete("/:id/delete", VerifyAdmin, deleteEvent);
 router.patch("/:id/update", VerifyAdmin, updateEvent);
