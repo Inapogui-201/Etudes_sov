@@ -1,0 +1,4 @@
+PORT=3000
+MDP_DATABASE="mUHzaWHiPxDqVr1G"
+DATABASE_URI="mongodb+srv://christmb017:Bev7Jy9YgVXf2B8y@cluster0.91crg.mongodb.net/sov_etudes?retryWrites=true&w=majority&appName=Cluster0"
+ADMIN_SECRET_TOKEN_KEY="WHhv29q4EFnQtb+/hwBgNKldCBaadyJKAbN3mwAAmJVwo4hKvOxlPcole8XuIC26FtYsddisJvQ3wCZT5IYS/Q=="

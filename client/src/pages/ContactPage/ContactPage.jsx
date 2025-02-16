@@ -109,7 +109,7 @@ const ContactPage = () => {
                     <SelectValue placeholder="Sélectionnez un sujet" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="reservation">Réservation</SelectItem>
+                    <SelectItem value="reservation">Etudier à l'étranger</SelectItem>
                     <SelectItem value="information">Demande d'information</SelectItem>
                     <SelectItem value="reclamation">Réclamation</SelectItem>
                     <SelectItem value="autre">Autre</SelectItem>

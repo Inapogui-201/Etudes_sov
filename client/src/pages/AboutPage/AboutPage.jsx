@@ -24,7 +24,7 @@ const AboutPage = () => {
           throw new Error("Failed to fetch events");
         }
         const data = await response.json();
-        setEvents(data.slice(0,3));
+        setEvents(data.slice(0, 3));
         //console.log(data);
       } catch (error) {
         setError(error.message || "Failed to fetch events");
@@ -217,44 +217,51 @@ const AboutPage = () => {
             </p>
           </div>
           {loading && (
-          <div className="text-center text-xl">Chargement des évenements...</div>
-        )}
+            <div className="text-center text-xl">
+              Chargement des évenements...
+            </div>
+          )}
 
-{error && (
-          <div className="text-center text-red-500 text-xl">{error}</div>
-        )}
-{!loading && !error && (
-   <div className="grid gap-8 md:grid-cols-3 mb-12">
-            {events.map((post) => (
-              <Card key={post.title} className="overflow-hidden">
-                <Link to={`/actualites/${post.slug}`} className="relative aspect-video cursor-pointer">
-                  <img
-                    src={post.medias}
-                    alt={post.title}
-                    fill
-                    className="object-cover"
-                  />
-                </Link>
-                <CardContent className="p-4">
-                  <p className="text-sm text-gray-500">
-                    {new Date(post.createdAt).toLocaleDateString("fr-FR", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>{" "}
-                  <h3 className="font-semibold text-lg mt-2">{post.title}</h3>
-                  {/* <p className="text-sm text-gray-500 mt-2">{post.content.slice(0,50)}{"..."}</p> */}
+          {error && (
+            <div className="text-center text-red-500 text-xl">{error}</div>
+          )}
+          {!loading && !error && (
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-4">
+              {events.map((post) => (
+                <Card key={post.title} className="overflow-hidden">
                   <div
-                className="text-sm text-gray-500 mt-2"
-                dangerouslySetInnerHTML={{ __html: post.content.slice(0,50) }} 
-              />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-)}
-         
+                    // to={`/actualites/${post.slug}`}
+                    className="relative w-full h-48 aspect-video cursor-pointer"
+                  >
+                   <Link  to={`/actualites/${post.slug}`} className="cursor-pointer"> <img
+                      src={post.medias}
+                      alt="Sov Etude agence de voyage"
+                      fill
+                      className="object-cover w-full h-full"
+                    /></Link>
+                  </div>
+                  <CardContent className="p-4">
+                    <p className="text-sm text-gray-500">
+                      {new Date(post.createdAt).toLocaleDateString("fr-FR", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>{" "}
+                    <h3 className="font-semibold text-lg mt-2">{post.title}</h3>
+                    {/* <p className="text-sm text-gray-500 mt-2">{post.content.slice(0,50)}{"..."}</p> */}
+                    <div
+                      className="text-sm text-gray-500 mt-2"
+                      dangerouslySetInnerHTML={{
+                        __html: post.content.slice(0, 50),
+                      }}
+                    />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+
           <div className="text-center">
             <Link to={"/actualites"}>
               {" "}

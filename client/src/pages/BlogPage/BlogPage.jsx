@@ -80,16 +80,19 @@ const BlogPage = () => {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
-              <Card key={post.id} className="flex flex-col">
-                <Link to={`/actualites/${post.slug}`} className="relative aspect-video cursor-pointer">
-                  <img
+              <Card key={post.id} className="overflow-hidden">
+                <div  className="relative aspect-video w-full h-48">
+                  <Link to={`/actualites/${post.slug}`}>
+                     <img
                     src={post.medias}
-                    alt={post.title}
-                    fill
-                    className="object-cover"
+                     alt="Sov Etude agence de voyage"
+                      fill
+                    className="object-cover w-full h-full"
                   />
+                  </Link>
                  
-                </Link>
+                 
+                </div>
                 <CardContent className="flex-1 p-6">
                   <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
                     <span className="flex items-center gap-1">
@@ -102,7 +105,12 @@ const BlogPage = () => {
                     </span>
                   </div>
                   <h2 className="text-xl font-bold mb-2">{post.title}</h2>
-                  <p className="text-gray-500">{post.content.slice(0,50)}{"..."}</p>
+                  <div
+                    className="text-sm text-gray-500 mt-2"
+                    dangerouslySetInnerHTML={{
+                      __html: post.content.slice(0, 50),
+                      }}
+                    />
                 </CardContent>
                 {/* <CardFooter className="p-6 pt-0">
                   <Button asChild variant="outline" className="w-full">
